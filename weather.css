@@ -1,0 +1,144 @@
+body{
+	background-image:url(images/sunset.jpg);
+	background-repeat:no-repeat;	
+	
+}
+.title{
+	font-family: 'Roboto Slab', serif;
+	color:white;
+	text-align:center;
+	margin-top:2.5em;
+	font-size:1.5em;
+}
+
+.container1{
+	margin-top:1em;
+	margin-bottom:1.5em;
+	padding-top:1em;
+	padding-bottom:3em; 
+    background: rgba(204, 204, 204, 0.5);
+}
+
+.radio-inline{
+	padding-right:0.5em; 
+}
+
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}	
+
+
+
+.nav-link{
+	background-color:white;
+}
+
+
+.container2{
+	background-color: white;
+	/*margin-top:2em;*/
+}
+
+.validation-warning{
+	font-size:1em;
+	color:red;
+}
+
+#icon{
+	margin-right:12em;
+	size:5em;
+	background:#B7DAD5;
+  	border-radius:0.5em;
+ 
+
+}
+
+#description-group{
+	text-align:center;
+}
+
+.wrapper{
+	padding-top:1em;
+	display:flex;
+	margin-bottom:1em;
+}
+
+.wrapper1{
+	padding-top:1em;
+	display:flex;
+	;
+}
+
+#search,#clear,#log{
+	margin-right:1em;
+}
+
+
+.description{
+	padding-top:2em;
+}
+
+#main-temp{
+	font-size:2em;
+}
+#max-temp{
+	color:red;
+}
+#min-temp{
+	color:blue;
+}
+
+/*#icon11{
+display:flex;
+}
+*/
+#icon1,#icon2,#icon3,#icon4,#icon5,#icon6,#icon7,#icon8,
+#modal-icon1,#modal-icon2,#modal-icon3,#modal-icon4,
+#modal-icon5,#modal-icon6,#modal-icon7,#modal-icon8{
+  max-width: 100%;
+  height: 4em;
+  background:#B7DAD5;
+  border: 1px solid #ddd;
+  border-radius: 1em;
+}
+
+#modal-icon1{
+	max-width: 100%;
+  	height: 4em;
+  	background:#B7DAD5;
+  	border: 1px solid #ddd;
+  	border-radius: 1em;
+
+}
+
+.modal-title{
+	font-size:1.2em;
+	font-weight:normal;
+}
+
+.modal-body{
+	text-align:center;
+}
+
+table{
+	text-align:center;
+}
+
+#map{
+	height: 400px;
+	width: 100%; 
+}
+
+#map-wrapper{
+	margin-top:1em;
+}
+
+#results{
+	visibility:hidden;
+}
+
+
+.customFA{
+	margin-right:1em;
+}

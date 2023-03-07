@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+     <link rel="stylesheet" href="weather.css"/>
+     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src=weather.js defer></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+     <link rel="stylesheet"href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap" rel="stylesheet">
+
+    <meta name="viewport"content="width=device width, initial scale=1">
+    <title>Weather Forecast Search</title>
+  </head>
+  <body>
+    <div class="title">Weather Forecast Search</div>
+    <div class="container container1" >
+
+      <form>
+        <div class="form-row">
+          <div class="col-md-3 col-sm-3 form-group required">
+            <label class="control-label" for="validationServer01">Address</label>
+            <input type="text" name="address" id="input1" placeholder="Enter address" class="form-control" >
+            <p class="validation-warning d-none" id="error1">Please enter your address!</p>
+          </div>
+
+          <div class="col-md-2 col-sm-3 form-group required">
+            <label class="control-label" for="validationServer02">Region</label>
+            <input type="text" name="region" id="input2" placeholder="Enter region" class="form-control " >
+              <p class="validation-warning d-none" id="error2">Please enter your region!</p>
+          </div>
+    
+          <div class="col-md-2 col-sm-3 form-group required" >
+            <label class="control-label" for="validationServer02">City</label>
+            <select id="input3" name="city" class="form-control">
+              <option value="" disabled selected>Select city</option>
+              <option>Limassol</option>
+              <option>Paphos</option>
+              <option>Nicosia</option>
+              <option>Larnaca</option>
+              <option>Famagusta</option>
+              <option>Kyrenia</option>
+            </select>
+              <p class="validation-warning d-none" id="error3">Please select your city!</p>
+          </div>
+
+
+
+          <div class="col-md-2 col-sm-3 form-group required">
+            <label class="d-block control-label">Degree</label>
+            <label class="radio-inline"><input type="radio" name="optradio" id="radio1" checked>°C</label>
+            <label class="radio-inline"><input type="radio" name="optradio" id="radio2">°F</label>
+          </div>
+
+
+          <div class="col-lg-3 col-md-5 col-sm-12 wrapper1">
+            <div>
+            <button type="button" class="btn btn-primary Search" id="search"> <i class="fa fa-search"></i> Search</button>
+          </div>
+          <div>
+            <button type="reset" class="btn btn-danger" id="clear"><i class="fa fa-ban"></i></button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-warning" id="log" data-toggle="modal" data-target="#myModalLog"> 
+			<i class="fa fa-server"></i></button>
+			  <div class="modal" id="myModalLog">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title1">Last 5 requests</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+							<table class="table table-striped">
+							  <thead>
+								<tr>
+								  <th scope="col">Time</th>
+								  <th scope="col">Address</th>
+								  <th scope="col">Region</th>
+								  <th scope="col">City</th>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr>
+								  <td id="t1"></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+								<tr>						
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+								<tr>								  
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+								<tr>								  
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								  <td></td>
+								</tr>
+							  </tbody>
+							</table>
+	
+                      
+
+          
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+          </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+ 
+ 
+ 
+	
+
+                  
+ 
+
+
+
+    <div class="container" id="results">
+    <ul class="nav nav-pills" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Right Now</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Next 24 hours</a>
+        </li>
+    
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class= "container container2">
+           
+
+            <div class="row row1">
+
+              <div class=" col-lg-6 col-md-12 col-sm-12">
+
+                   <div class="wrapper">
+              <div>
+              <img id="icon" src="" class="rounded-circle"> 
+            </div>
+              <div id="description-group">
+                <div id="description"></div>
+                <div id="main-temp"></div>
+                <span id="min-temp"></span> <span id="max-temp"></span> 
+            
+              </div>
+           </div>
+
+
+
+
+
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td scope="row">Pressure</td>
+                      <td id="pressure">N.A.</td>
+                    </tr>
+                    <tr>
+                      <td scope="row">Humidity</td>
+                       <td id="humidity">N.A.</td>
+                    </tr>
+                      <tr>
+                      <td scope="row">Wind Speed</td>
+                       <td id="wind-speed">N.A.</td>
+                    </tr>
+                      <tr>
+                      <td scope="row">Cloud Cover</td>
+                       <td id="cloud-cover">N.A.</td>
+                    </tr>
+                      <tr>
+                      <td scope="row">Sunrise</td>
+                       <td id="sunrise">N.A.</td>
+                    </tr>
+                     <tr>
+                      <td scope="row">Sunset</td>
+                      <td id="sunset">N.A.</td>
+                    </tr>
+                   
+                
+                  </tbody>
+                </table>
+
+              </div>
+
+               <div class=" col-lg-6 col-md-12 col-sm-12" id="map-wrapper">
+                <div  id="map"class="map">
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+      </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="container container2">
+             <table class="table table-striped sm-12">
+              <thead>
+                <tr>
+                  <th scope="col">Time</th>
+                  <th scope="col">Summary</th>
+                  <th scope="col">Temp</th>
+                  <th scope="col">Cloud Cover</th>
+                   <th scope="col">Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row" id="time1">N.A.</td>
+                  <td ><img src="" id="icon1"></td>
+                  <td id="temp1">N.A.</td>
+                  <td id="cloud1">N.A.</td>
+                   <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal1">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal1">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title1">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon1">
+                              </div>
+                               <div class="col-md-6" id="modal-description1">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h1">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p1">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws1">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+               <tr>
+                  <td scope="row" id="time2">N.A.</td>
+                  <td ><img src="" id="icon2"></td>
+                  <td id="temp2">N.A.</td>
+                  <td id="cloud2">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal2">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal2">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title2">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon2">
+                              </div>
+                               <div class="col-md-6" id="modal-description2">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h2">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p2">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws2">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+                 <tr>
+                  <td scope="row" id="time3">N.A.</td>
+                  <td ><img src="" id="icon3"></td>
+                  <td id="temp3">N.A.</td>
+                  <td id="cloud3">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal3">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal3">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title3">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon3">
+                              </div>
+                               <div class="col-md-6" id="modal-description3">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h3">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p3">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws3">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+                 <tr>
+                  <td scope="row" id="time4">N.A.</td>
+                  <td ><img src="" id="icon4"></td>
+                  <td id="temp4">N.A.</td>
+                  <td id="cloud4">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal4">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal4">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title4">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon4">
+                              </div>
+                               <div class="col-md-6" id="modal-description4">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h4">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p4">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws4">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+                 <tr>
+                  <td scope="row" id="time5">N.A.</td>
+                  <td ><img src="" id="icon5"></td>
+                  <td id="temp5">N.A.</td>
+                  <td id="cloud5">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal5">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal5">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title5">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon5">
+                              </div>
+                               <div class="col-md-6" id="modal-description5">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h5">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p5">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws5">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+                 <tr>
+                  <td scope="row" id="time6">N.A.</td>
+                  <td ><img src="" id="icon6"></td>
+                  <td id="temp6">N.A.</td>
+                  <td id="cloud6">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal6">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal6">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title6">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon6">
+                              </div>
+                               <div class="col-md-6" id="modal-description6">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h6">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p6">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws6">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+                 <tr>
+                  <td scope="row" id="time7">N.A.</td>
+                  <td ><img src="" id="icon7"></td>
+                  <td id="temp7">N.A.</td>
+                  <td id="cloud7">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal7">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal7">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title7">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon7">
+                              </div>
+                               <div class="col-md-6" id="modal-description7">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h7">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p7">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws7">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+                 <tr>
+                  <td scope="row" id="time8">N.A.</td>
+                  <td ><img src="" id="icon8"></td>
+                  <td id="temp8">N.A.</td>
+                  <td id="cloud8">N.A.</td>
+                  <td>
+
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal8">
+                     View
+                    </button>
+
+                    <div class="modal" id="myModal8">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-title8">N.A.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+
+                          <div class="modal-body container">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <img src="" id="modal-icon8">
+                              </div>
+                               <div class="col-md-6" id="modal-description8">
+                                N.A.
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-4">
+                                <b>Humidity</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Pressure</b>
+                              </div>
+                              <div class="col-md-4">
+                                <b>Wind Speed</b>
+                              </div>
+                            </div>
+
+                             <div class="row">
+                              <div class="col-md-4" id="modal-h8">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-p8">
+                                N.A.
+                              </div>
+                               <div class="col-md-4" id="modal-ws8">
+                                N.A.
+                              </div>
+                            </div>
+                          </div>
+
+              
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      
+    </div>
+
+
+
+</div>
+
+
+
+
+
+    
+  </body>
+</html>
